@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import './App.css'
+import Structure from './Components/Structure';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './Components/Home';
+import Login from './Components/Login/Login';
+import { UserStorage } from './UserContext';
+import ProtectedRouter from './Components/Helper/ProtectedRouter';
+import User from './User/User';
+import Photo from './Components/Photo/Photo'
+import UserProfile from './User/UserProfile';
+import NotFound from './Components/NotFound';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter >
+      <UserStorage>
+      <Structure>
+        <main className='AppBody'>
+          <Routes>
+          <Route path='/' element={<Home />}/>
+          <Route path='/login/*' element={<Login />}/>
+          <Route path='/conta/*' element={
+          <ProtectedRouter>
+          <User />
+          </ProtectedRouter>}/>
+          <Route path='foto/:id' element={<Photo />} />
+          <Route path='perfil/:user' element={<UserProfile />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+        </main>
+      </Structure>
+      </UserStorage>
+      </BrowserRouter>
+      
     </div>
   );
 }
